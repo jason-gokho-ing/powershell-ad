@@ -1,11 +1,3 @@
-$PSVersionTable
-
-# name of the forest is test-env
-
-cd C:\Powershell-AD
-
-#Import Active Directory commands
-Import-Module ActiveDirectory
 
 $RootDN = "OU=Company XYZ, DC=test-env, DC=local"
 $StaffOU = "OU=Staff,$RootDN"
@@ -26,12 +18,12 @@ New-ADOrganizationalUnit -Name "Company XYZ" -Path "DC=test-env, DC=local" -Prot
 New-ADOrganizationalUnit -Name "Staff" -Path $RootDN -ProtectedFromAccidentalDeletion $false
 
 # create departments within the staff to better organize
-New-ADOrganizationalUnit -Name "ITDept" -Path $StaffOU -ProtectedFromAccidentalDeletion $false
-New-ADOrganizationalUnit -Name "HRDept" -Path $StaffOU -ProtectedFromAccidentalDeletion $false
-New-ADOrganizationalUnit -Name "AccountingDept" -Path $StaffOU -ProtectedFromAccidentalDeletion $false
+New-ADOrganizationalUnit -Name "IT" -Path $StaffOU -ProtectedFromAccidentalDeletion $false
+New-ADOrganizationalUnit -Name "HR" -Path $StaffOU -ProtectedFromAccidentalDeletion $false
+New-ADOrganizationalUnit -Name "Accounting" -Path $StaffOU -ProtectedFromAccidentalDeletion $false
 
 # Create department groups for security purposes
-$departments = @("ITDept", "HRDept", "AccountingDept")
+$departments = @("IT", "HR", "Accounting")
 
 foreach ($dept in $departments) {
 #put security groups in department paths
@@ -105,5 +97,5 @@ Write-Host "Errors: $errorCount"
 
 # test commands 
 Get-ADUser -Identity "ypark" | Select-Object Name, SamAccountName
-Get-ADGroupMember -Identity "ITDept-Group" | Select-Object Name, SamAccountName
+Get-ADGroupMember -Identity "IT-Group" | Select-Object Name, SamAccountName
 Get-ADUser -Identity "apatel" -Properties *
